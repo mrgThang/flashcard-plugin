@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "flashcard-plugin",
+	"name": "Flashcard Plugin",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Flashcards with space repetition algorithm",
+	"author": "mrgThang",
+	"authorUrl": "https://github.com/mrgThang",
+	"fundingUrl": "https://github.com/mrgThang",
 	"isDesktopOnly": false
 }

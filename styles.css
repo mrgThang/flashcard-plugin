@@ -6,3 +6,59 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em; /* More space between rows */
+    padding: 2em 2.5em;
+    border-radius: 12px;
+    margin: 2em auto;
+    max-width: 350px;
+}
+
+.login-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 1em;
+}
+
+.login-row label {
+    min-width: 100px;
+    text-align: right;
+    font-weight: 500;
+}
+
+.login-row input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.5em 0.75em;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+}
+
+.login-form button {
+    margin-top: 1em;
+    padding: 0.6em 2em;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.login-form button:hover {
+    /* color: #ffffff; */
+    background: hsl(258, 88%, 66%);
+}
+
+.login-message {
+    margin-top: 1em;
+    font-size: 1em;
+    color: #d32f2f;
+    text-align: center;
+}
