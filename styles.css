@@ -7,6 +7,128 @@ If your plugin does not need CSS, delete this file.
 
 */
 
+/* Dashboard header */
+.deck-dashboard-header {
+    margin-top: 1em;
+    margin-bottom: 1.5em;
+    text-align: left;
+}
+.deck-dashboard-header h2 {
+    font-size: 2em;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Action buttons */
+.deck-dashboard-actions {
+    display: flex;
+    gap: 1.5em;
+    margin-bottom: 2em;
+    justify-content: flex-start;
+}
+.deck-action-card, .deck-action-deck {
+    border-radius: 16px;
+    background: #7952ee23;
+    border-color: #7952eebb;
+    border-width: 3px;
+    border-style: solid;
+    padding: 2em 3em;
+    min-width: 80px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    outline: none;
+    font-weight: 500;
+}
+.deck-action-card:hover, .deck-action-deck:hover {
+    background: #7852ee70;
+}
+/* .deck-action-label {
+    color: #333;
+}
+.deck-action-label {
+    color: #333;
+} */
+
+/* My Decks header and search */
+.deck-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+.deck-list-header h3 {
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: 700;
+}
+
+/* Deck cards */
+.deck-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+}
+.deck-card {    
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 16px;
+    border-width: 3px;
+    border-color: #c0c0c0;
+    min-width: 80px;
+    min-height: 80px;
+    padding: 1em 1.5em;
+    gap: 1em;
+    position: relative;
+}
+.deck-card-avatar img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.deck-card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+}
+.deck-card-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #222;
+}
+.deck-card-date {
+    font-size: 0.95em;
+    color: #888;
+}
+.deck-card-count {
+    font-size: 0.95em;
+    color: #4f8cff;
+    font-weight: 500;
+}
+.deck-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.deck-card-delete {
+    background: none;
+    border: none;
+    font-size: 1.3em;
+    color: #bdbdbd;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.deck-card-delete:hover {
+    color: #d32f2f;
+}
+
+/* Login form */
 .login-form {
     display: flex;
     flex-direction: column;
@@ -42,6 +164,7 @@ If your plugin does not need CSS, delete this file.
 
 .login-form button {
     margin-top: 1em;
+    margin-bottom: 1em;
     padding: 0.6em 2em;
     border: 2px solid #ccc;
     border-radius: 6px;
@@ -61,4 +184,10 @@ If your plugin does not need CSS, delete this file.
     font-size: 1em;
     color: #d32f2f;
     text-align: center;
+}
+
+.theme-dark .deck-card,
+.theme-dark .deck-action-card,
+.theme-dark .deck-action-deck {
+    background: #23272e;
 }

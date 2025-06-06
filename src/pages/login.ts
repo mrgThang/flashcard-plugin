@@ -1,4 +1,27 @@
-import '../styles.css'
+import '../../styles.css'
+import { ItemView } from "obsidian";
+import { DECK_PANEL, LOGIN_PANEL, SIGNUP_PANEL } from "../constants";
+import { activatePanel } from 'src/helpers';
+
+export class LoginPanelView extends ItemView {
+	getViewType(): string {
+		return LOGIN_PANEL;
+	}
+
+	getDisplayText(): string {
+		return "Login Panel";
+	}
+
+	async onOpen() {
+		const container = this.containerEl.children[1];
+		container.empty();
+		renderLoginView(container);
+	}
+
+	async onClose() {
+		// Optional cleanup logic
+	}
+}
 
 export function renderLoginView(container: HTMLElement) {
 	container.createEl("h2", { text: "Flashcard" });
@@ -32,9 +55,20 @@ export function renderLoginView(container: HTMLElement) {
 
 		// Dummy auth check
 		if (username === "admin" && password === "1234") {
-			message.setText("✅ Login successful!");
+			activatePanel(DECK_PANEL);
 		} else {
 			message.setText("❌ Invalid credentials");
 		}
+	};
+
+	const signupLink = form.createEl("div", { cls: "login-signup-link" });
+	signupLink.createEl("span", { text: "Don't have an account? " });
+	const signupAnchor = signupLink.createEl("a", {
+		text: "Sign up",
+		href: "#signup",
+		cls: "signup-link"
+	});
+	signupAnchor.onclick = (event) => {
+		activatePanel(SIGNUP_PANEL);
 	};
 }

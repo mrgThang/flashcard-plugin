@@ -1,27 +1,9 @@
-import { Plugin, ItemView } from "obsidian";
-import { renderLoginView } from "./pages/login";
-
-const VIEW_TYPE_LOGIN = "login-panel";
-
-class LoginPanelView extends ItemView {
-	getViewType(): string {
-		return VIEW_TYPE_LOGIN;
-	}
-
-	getDisplayText(): string {
-		return "Login Panel";
-	}
-
-	async onOpen() {
-		const container = this.containerEl.children[1];
-		container.empty();
-		renderLoginView(container);
-	}
-
-	async onClose() {
-		// Optional cleanup logic
-	}
-}
+import { Plugin } from "obsidian";
+import { LoginPanelView } from "./src/pages/login";
+import { SignupPanelView } from "./src/pages/signup";
+import { DECK_PANEL, LOGIN_PANEL, SIGNUP_PANEL } from "./src/constants";
+import { activatePanel } from "./src/helpers";
+import { DeckPanelView } from "src/pages/deck";
 
 export default class LoginPlugin extends Plugin {
 	async onload() {
@@ -33,25 +15,18 @@ export default class LoginPlugin extends Plugin {
             document.head.appendChild(link);
         });
 		
-		this.registerView(VIEW_TYPE_LOGIN, (leaf) => new LoginPanelView(leaf));
+		this.registerView(LOGIN_PANEL, (leaf) => new LoginPanelView(leaf));
+		this.registerView(SIGNUP_PANEL, (leaf) => new SignupPanelView(leaf));
+		this.registerView(DECK_PANEL, (leaf) => new DeckPanelView(leaf));
 
 		this.addCommand({
-			id: "open-login-panel",
-			name: "Open Login Panel",
-			callback: () => this.activateLoginPanel(),
+			id: "open-flashcard-panel",
+			name: "Open Flashcard Panel",
+			callback: () => activatePanel(LOGIN_PANEL),
 		});
-	}
-
-	async activateLoginPanel() {
-		const leaf = this.app.workspace.getRightLeaf(false);
-		await leaf.setViewState({
-			type: VIEW_TYPE_LOGIN,
-			active: true,
-		});
-		this.app.workspace.revealLeaf(leaf);
 	}
 
 	onunload() {
-		this.app.workspace.getLeavesOfType(VIEW_TYPE_LOGIN).forEach((leaf) => leaf.detach());
+		this.app.workspace.getLeavesOfType(LOGIN_PANEL).forEach((leaf) => leaf.detach());
 	}
 }
