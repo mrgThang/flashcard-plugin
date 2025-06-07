@@ -1,29 +1,6 @@
 import '../../styles.css'
-import { ItemView } from "obsidian";
-import { LOGIN_PANEL, SIGNUP_PANEL } from "../constants";
-import { activatePanel } from 'src/helpers';
 
-export class SignupPanelView extends ItemView {
-    getViewType(): string {
-        return SIGNUP_PANEL;
-    }
-
-    getDisplayText(): string {
-        return "Signup Panel";
-    }
-
-    async onOpen() {
-        const container = this.containerEl.children[1];
-        container.empty();
-        renderSignupView(container);
-    }
-
-    async onClose() {
-        // Optional cleanup logic
-    }
-}
-
-export function renderSignupView(container: HTMLElement) {
+export function renderSignupView(container: HTMLElement, onSignupSuccess: any) {
     container.createEl("h2", { text: "Flashcard" });
 
     const form = container.createDiv({ cls: "login-form" });
@@ -55,6 +32,6 @@ export function renderSignupView(container: HTMLElement) {
         const email = emailInput.value;
         const password = passwordInput.value;
 
-        activatePanel(LOGIN_PANEL);
+        onSignupSuccess();
     };
 }

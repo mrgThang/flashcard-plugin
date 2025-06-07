@@ -7,18 +7,6 @@ If your plugin does not need CSS, delete this file.
 
 */
 
-/* Dashboard header */
-.deck-dashboard-header {
-    margin-top: 1em;
-    margin-bottom: 1.5em;
-    text-align: left;
-}
-.deck-dashboard-header h2 {
-    font-size: 2em;
-    font-weight: 700;
-    margin: 0;
-}
-
 /* Action buttons */
 .deck-dashboard-actions {
     display: flex;
@@ -30,7 +18,7 @@ If your plugin does not need CSS, delete this file.
     border-radius: 16px;
     background: #7952ee23;
     border-color: #7952eebb;
-    border-width: 3px;
+    border-width: 2px;
     border-style: solid;
     padding: 2em 3em;
     min-width: 80px;
@@ -46,24 +34,8 @@ If your plugin does not need CSS, delete this file.
 .deck-action-card:hover, .deck-action-deck:hover {
     background: #7852ee70;
 }
-/* .deck-action-label {
-    color: #333;
-}
-.deck-action-label {
-    color: #333;
-} */
-
-/* My Decks header and search */
-.deck-list-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1em;
-}
-.deck-list-header h3 {
-    margin: 0;
-    font-size: 1.3em;
-    font-weight: 700;
+.theme-dark .deck-action-card:hover, .theme-dark .deck-action-deck:hover {
+    background: #7852ee70;
 }
 
 /* Deck cards */
@@ -73,17 +45,34 @@ If your plugin does not need CSS, delete this file.
     gap: 1.2em;
 }
 .deck-card {    
-    display: flex;
-    align-items: center;
-    background: #fff;
     border-radius: 16px;
-    border-width: 3px;
+    background: #fff;
     border-color: #c0c0c0;
+    border-width: 2px;
+    border-style: solid;
+    padding: 1em 2em;
     min-width: 80px;
     min-height: 80px;
-    padding: 1em 1.5em;
-    gap: 1em;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    outline: none;
+    font-weight: 500;
     position: relative;
+    gap: 1em;
+}
+.deck-card:hover {
+    background-color: #c0c0c03b;
+}
+.theme-dark .deck-card:hover {
+    background-color: #c0c0c03b;
+}
+.deck-card:hover:has(.trash-icon:hover) {
+    background-color: #fff;
+}
+.theme-dark .deck-card:hover:has(.trash-icon:hover) {
+    background-color: #23272e;
 }
 .deck-card-avatar img {
     width: 48px;
@@ -100,16 +89,12 @@ If your plugin does not need CSS, delete this file.
 .deck-card-title {
     font-size: 1.1em;
     font-weight: 600;
-    color: #222;
-}
-.deck-card-date {
-    font-size: 0.95em;
-    color: #888;
 }
 .deck-card-count {
-    font-size: 0.95em;
-    color: #4f8cff;
-    font-weight: 500;
+    color: #c0c0c0;
+}
+.deck-card-need-learn {
+    color: #7952eebb;
 }
 .deck-card-actions {
     display: flex;
@@ -119,13 +104,24 @@ If your plugin does not need CSS, delete this file.
 .deck-card-delete {
     background: none;
     border: none;
-    font-size: 1.3em;
+    font-size: 1.6em;
     color: #bdbdbd;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: color 0.2s, background 0.2s;
+    width: 2.5em;
+    height: 2.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    user-select: none; /* Prevent text selection */
+    background: #7952ee23;
+    border-color: #7952eebb;
+    border-width: 2px;
+    border-style: solid;
 }
 .deck-card-delete:hover {
-    color: #d32f2f;
+    background: #e931467c;   /* Red background on hover */
 }
 
 /* Login form */
@@ -190,4 +186,246 @@ If your plugin does not need CSS, delete this file.
 .theme-dark .deck-action-card,
 .theme-dark .deck-action-deck {
     background: #23272e;
+}
+
+.header-row {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.back-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.deck-detail-info {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    margin-bottom: 2em;
+}
+
+.deck-detail-avatar img {
+    width: 128px;
+    height: 128px;
+    border-radius: 16px;
+    object-fit: cover;
+    border: 1px solid #c0c0c0;
+}
+
+.deck-detail-total-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    font-weight: 500;
+}
+
+.deck-detail-need-to-learn {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    color: #7952eebb;
+    font-weight: 500;
+}
+
+.add-button {
+    border-radius: 16px;
+    background: #7952ee23;
+    border-color: #7952eebb;
+    border-width: 2px;
+    border-style: solid;
+    /* padding: 1em 2em; */
+    min-width: 48px;
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    outline: none;
+    font-weight: 500;
+    text-align: center; /* center left right */
+    justify-content: center;  /* center up down */
+    margin-left: auto;  /* put item to left */
+}
+.add-button:hover {
+    background: #7852ee70;
+}
+.theme-dark .add-button:hover {
+    background: #7852ee70;
+}
+
+.deck-detail-cards-list {
+    margin-top: 2em;
+}
+
+.deck-detail-card {
+    background: #fff;
+    border-color: #c0c0c0;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 16px;
+    padding: 1em 1.5em;
+    margin-bottom: 1em;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    outline: none;
+    position: relative;
+}
+
+.deck-detail-card:hover {
+    background: #c0c0c03b;
+}
+.deck-detail-card:hover:has(.trash-icon:hover) {
+    background: #fff;
+}
+.theme-dark .deck-detail-card:hover {
+    background: #c0c0c03b;
+}
+.theme-dark .deck-detail-card:hover:has(.trash-icon:hover) {
+    background: #23272e;
+}
+
+.deck-detail-card-front {
+    flex-direction: column;
+}
+
+.trash-icon {
+    flex-direction: column;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    border-radius: 10px;
+}
+
+.trash-icon:hover {
+    background-color: #e9314674;
+}
+
+.theme-dark .deck-detail-card {
+    background: #23272e;
+}
+
+.create-deck-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em; /* More space between rows */
+    padding: 2em 2.5em;
+    border-radius: 12px;
+    margin: 2em auto;
+    max-width: 450px;
+    cursor: pointer;
+}
+.create-deck-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 1em;
+}
+.create-deck-row label {
+    min-width: 100px; /* fix width of label */
+}
+.create-deck-row input {
+    flex: auto;
+    min-width: 250px; /* fix width of label */
+    max-width: 100%;
+}
+.create-deck textarea {
+    display: flex;
+    min-width: 500px; /* fix width of label */
+    max-width: 100%;
+}
+.create-deck-image {
+    display: flex;
+    flex: auto;
+    max-width: 100%;
+    min-width: 80px;
+    margin-top: 1em; /* top spacing with above element */
+}
+
+/* --- Create Card View --- */
+.create-card-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em;
+    padding: 2em 2.5em;
+    border-radius: 12px;
+    margin: 2em auto;
+    max-width: 450px;
+    background: #f8fafd;
+}
+
+.create-card-row {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    gap: 1em;
+}
+
+.create-card-row label {
+    min-width: 80px;
+    font-weight: 500;
+    margin-top: 0.4em;
+}
+
+.create-card-input {
+    flex: 1;
+    min-width: 200px;
+    max-width: 100%;
+    padding: 0.5em 0.75em;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    margin-bottom: 0.5em;
+}
+
+.create-card-list {
+    flex: 1;
+    list-style: disc inside;
+    margin: 0 0.5em 0 0;
+    padding: 0;
+    min-height: 2em;
+}
+
+.create-card-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 0.3em 0.7em;
+    margin-bottom: 0.3em;
+    font-size: 1em;
+}
+
+.create-card-remove {
+    color: #e93146;
+    margin-left: 1em;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.2s;
+}
+.create-card-remove:hover {
+    color: #b71c1c;
+}
+
+.theme-dark .create-card-form {
+    background: #23272e;
+}
+.theme-dark .create-card-list-item {
+    background: #23272e;
+    border-color: #444;
+    color: #eee;
+}
+.theme-dark .create-card-remove {
+    color: #ff6f6f;
 }

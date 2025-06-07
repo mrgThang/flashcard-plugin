@@ -1,29 +1,6 @@
 import '../../styles.css'
-import { ItemView } from "obsidian";
-import { DECK_PANEL, LOGIN_PANEL, SIGNUP_PANEL } from "../constants";
-import { activatePanel } from 'src/helpers';
 
-export class LoginPanelView extends ItemView {
-	getViewType(): string {
-		return LOGIN_PANEL;
-	}
-
-	getDisplayText(): string {
-		return "Login Panel";
-	}
-
-	async onOpen() {
-		const container = this.containerEl.children[1];
-		container.empty();
-		renderLoginView(container);
-	}
-
-	async onClose() {
-		// Optional cleanup logic
-	}
-}
-
-export function renderLoginView(container: HTMLElement) {
+export function renderLoginView(container: HTMLElement, onLoginSuccess: any, onClickSignUp: any) {
 	container.createEl("h2", { text: "Flashcard" });
 
 	const form = container.createDiv({ cls: "login-form" });
@@ -55,7 +32,7 @@ export function renderLoginView(container: HTMLElement) {
 
 		// Dummy auth check
 		if (username === "admin" && password === "1234") {
-			activatePanel(DECK_PANEL);
+			onLoginSuccess();
 		} else {
 			message.setText("❌ Invalid credentials");
 		}
@@ -69,6 +46,6 @@ export function renderLoginView(container: HTMLElement) {
 		cls: "signup-link"
 	});
 	signupAnchor.onclick = (event) => {
-		activatePanel(SIGNUP_PANEL);
+		onClickSignUp();
 	};
 }
