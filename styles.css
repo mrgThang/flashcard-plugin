@@ -207,12 +207,32 @@ If your plugin does not need CSS, delete this file.
     margin-bottom: 2em;
 }
 
+.deck-detail-avatar {
+    position: relative;
+    display: inline-block;
+}
 .deck-detail-avatar img {
-    width: 128px;
+    min-width: 128px;
     height: 128px;
     border-radius: 16px;
     object-fit: cover;
     border: 1px solid #c0c0c0;
+}
+.avatar-edit-icon {
+    position: absolute;
+    top: 48px;
+    left: 48px;
+    /* background: #fff; */
+    border-radius: 50%;
+    padding: 3px;
+    box-shadow: 0 1px 4px #0001;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+.deck-detail-avatar:hover .avatar-edit-icon {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .deck-detail-total-cards {
@@ -220,6 +240,7 @@ If your plugin does not need CSS, delete this file.
     flex-direction: column;
     gap: 1em;
     font-weight: 500;
+    margin-top: 1em; /* top spacing with above element */
 }
 
 .deck-detail-need-to-learn {
@@ -254,6 +275,32 @@ If your plugin does not need CSS, delete this file.
     background: #7852ee70;
 }
 .theme-dark .add-button:hover {
+    background: #7852ee70;
+}
+
+.deck-detail-button-start {
+    border-radius: 16px;
+    background: #7952ee23;
+    border-color: #7952eebb;
+    border-width: 2px;
+    border-style: solid;
+    /* padding: 1em 2em; */
+    min-width: 48px;
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    outline: none;
+    font-weight: 500;
+    text-align: center; /* center left right */
+    justify-content: center;  /* center up down */
+}
+.deck-detail-button-start:hover {
+    background: #7852ee70;
+}
+.theme-dark .deck-detail-button-start:hover {
     background: #7852ee70;
 }
 
@@ -353,13 +400,12 @@ If your plugin does not need CSS, delete this file.
 .create-card-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.5em;
-    padding: 2em 2.5em;
+    /* align-items: center; */
+    gap: 1em;
+    /* padding: 2em 2.5em; */
     border-radius: 12px;
-    margin: 2em auto;
+    /* margin: 2em auto; */
     max-width: 450px;
-    background: #f8fafd;
 }
 
 .create-card-row {
@@ -371,39 +417,42 @@ If your plugin does not need CSS, delete this file.
 
 .create-card-row label {
     min-width: 80px;
-    font-weight: 500;
     margin-top: 0.4em;
 }
 
-.create-card-input {
-    flex: 1;
-    min-width: 200px;
+.create-card-editbox {
+    border-color: #7952ee52;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 1em 1.5em;
+    width: 100%;
     max-width: 100%;
-    padding: 0.5em 0.75em;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    font-size: 1em;
-    margin-bottom: 0.5em;
 }
 
-.create-card-list {
-    flex: 1;
-    list-style: disc inside;
-    margin: 0 0.5em 0 0;
-    padding: 0;
-    min-height: 2em;
+.create-card-editbox:hover {
+    border-color: #7952eebb;
+    border-width: 2px;
+    border-style: solid;
+    /* box-shadow: 0 0 0 2px #e0d7ff55; */
+    /* outline: none; */
 }
 
-.create-card-list-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.create-card-editbox:focus {
+    border-color: #7952eebb;
+    border-width: 2px;
+    box-shadow: 0 0 0 2px #e0d7ff55;
+    outline: none;
+}
+
+.create-card-preview {
     background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    padding: 0.3em 0.7em;
-    margin-bottom: 0.3em;
-    font-size: 1em;
+    border-radius: 5px;
+    padding: 1em 1.5em;
+}
+
+.theme-dark .create-card-preview {
+    background: #444;
 }
 
 .create-card-remove {
@@ -428,4 +477,129 @@ If your plugin does not need CSS, delete this file.
 }
 .theme-dark .create-card-remove {
     color: #ff6f6f;
+}
+
+/* --- Learn View --- */
+.learn-remain-container {
+    display: flex;
+    font-weight: bold;
+    padding: 1.5em;
+}
+.learn-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1200px;
+    min-height: 220px;
+}
+
+.learn-flashcard {
+    width: 500px;
+    min-height: 300px;
+    perspective: 1200px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+.learn-flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(.4,2,.6,1);
+    transform-style: preserve-3d;
+}
+.learn-flashcard.flipped .learn-flashcard-inner {
+    transform: rotateY(180deg);
+}
+.learn-flashcard-front,
+.learn-flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    backface-visibility: hidden;
+    background: #fff;
+    border: 2px solid #7952eebb;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px 0 #7952ee33;
+    padding: 1.5em;
+}
+.learn-flashcard-back {
+    transform: rotateY(180deg);
+    background: #f8fafd;
+}
+.theme-dark .learn-flashcard-front,
+.theme-dark .learn-flashcard-back {
+    background: #23272e;
+    color: #eee;
+    border-color: #b39ddb;
+}
+.learn-flashcard.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.learn-flashcard.fade-in {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.learn-options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 2em;
+    align-items: center;
+}
+
+.learn-options-row {
+    display: flex;
+    gap: 2em;
+    justify-content: center;
+}
+
+.learn-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 160px;
+    min-height: 80px;
+    max-width: 180px;
+    max-height: 90px;
+    box-sizing: border-box;
+    padding: 0.8em 1em;
+    border-radius: 12px;
+    border: 2px solid #7952eebb;
+    background: #fff;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    text-align: center;
+    user-select: none;
+}
+
+.learn-option-label {
+    font-size: 1.1em;
+    margin-bottom: 0.2em;
+}
+
+.learn-option-days {
+    font-size: 0.95em;
+    color: #888;
+    margin-top: 0.3em;
+}
+
+.learn-option-forgot { color: #e93146; border-color: #e93146; }
+.learn-option-struggled { color: #fbc02d; border-color: #fbc02d; }
+.learn-option-almost { color: #1976d2; border-color: #1976d2; }
+.learn-option-gotit { color: #388e3c; border-color: #388e3c; }
+
+.learn-option-forgot:hover { background: #ffebee; }
+.learn-option-struggled:hover { background: #fffde7; }
+.learn-option-almost:hover { background: #e3f2fd; }
+.learn-option-gotit:hover { background: #e8f5e9; }
+
+.theme-dark .learn-option {
+    background: #23272e;
+    color: #eee;
 }

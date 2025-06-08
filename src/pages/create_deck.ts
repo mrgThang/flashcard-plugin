@@ -47,7 +47,7 @@ export function renderCreateDeckView(
     // Description
     const descRow = form.createDiv({cls: "create-deck-row"})
     const descLabel = descRow.createEl("label", { text: "Description", attr: { for: "deck-desc" } });
-    const descInput = descRow.createEl("textarea", { attr: { id: "deck-desc", rows: "3", placeholder: "Describe your deck..." } });
+    const descInput = descRow.createEl("textarea", { attr: { id: "deck-desc", rows: "3", cols: "100", placeholder: "Describe your deck..." } });
 
     // Actions
     const actions = form.createDiv({ cls: "create-deck-row" });

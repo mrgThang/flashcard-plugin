@@ -1,5 +1,4 @@
 import { Plugin } from "obsidian";
-import { activatePanel } from "./src/helpers";
 import { ItemView } from "obsidian";
 import { renderLoginView } from "./src/pages/login"
 import { renderSignupView } from "./src/pages/signup";
@@ -7,11 +6,13 @@ import { renderDeckView } from "src/pages/deck";
 import { renderDeckDetailView } from "src/pages/deck_detail";
 import { renderCreateDeckView } from "src/pages/create_deck";
 import { renderCreateCardView } from "src/pages/create_card";
+import { renderLearnView } from "src/pages/learn";
 
 export const FLASHCARD_PANEL = "flashcard-panel";
 
 export class FlashcardPanelView extends ItemView {
-    currentView = "create-card";
+    currentView = "login";
+    lastView = "login";
 
     getViewType(): string {
         return FLASHCARD_PANEL;
@@ -31,12 +32,14 @@ export class FlashcardPanelView extends ItemView {
         if (this.currentView === "login") renderLoginView(container, () => this.switchView("deck"), () => this.switchView("signup"));
         else if (this.currentView === "signup") renderSignupView(container, () => this.switchView("login"));
         else if (this.currentView === "deck") renderDeckView(container, () => this.switchView("deck-detail"), () => this.switchView("create-deck"));
-        else if (this.currentView === "deck-detail") renderDeckDetailView(container, () => this.switchView("deck"));
-        else if (this.currentView === "create-deck") renderCreateDeckView(container, () => this.switchView("deck"), () => this.switchView("deck"));
-        else if (this.currentView === "create-card") renderCreateCardView(container, () => {}, () => {});
+        else if (this.currentView === "deck-detail") renderDeckDetailView(container, () => this.switchView("deck"), () => this.switchView("create-card"), () => this.switchView("learn"), () => this.switchView("create-deck"));
+        else if (this.currentView === "create-deck") renderCreateDeckView(container, () => this.switchView("deck"), () => this.switchView(this.lastView));
+        else if (this.currentView === "create-card") renderCreateCardView(container, () => this.switchView("deck-detail"));
+        else if (this.currentView == "learn") renderLearnView(container, () => this.switchView("deck-detail"));
     }
 
     switchView(view: string) {
+        this.lastView = this.currentView;
         this.currentView = view;
         this.renderCurrentView();
     }
@@ -63,4 +66,13 @@ export default class FlashCardPlugin extends Plugin {
 	onunload() {
 		this.app.workspace.getLeavesOfType(FLASHCARD_PANEL).forEach((leaf) => leaf.detach());
 	}
+}
+
+async function activatePanel(viewType: string) {
+    const leaf = this.app.workspace.getRightLeaf(false);
+    await leaf.setViewState({
+        type: viewType,
+        active: true,
+    });
+    this.app.workspace.revealLeaf(leaf);
 }
