@@ -1,6 +1,12 @@
+import { LoginHandler } from 'src/requests/request';
 import '../../styles.css'
+import { LoginRequest } from 'src/interfaces/login';
 
-export function renderLoginView(container: HTMLElement, onLoginSuccess: any, onClickSignUp: any) {
+export function renderLoginView(
+	container: HTMLElement, 
+	onLoginSuccess: () => void, 
+	onClickSignUp: () => void
+) {
 	container.createEl("h2", { text: "Flashcard" });
 
 	const form = container.createDiv({ cls: "login-form" });
@@ -26,15 +32,18 @@ export function renderLoginView(container: HTMLElement, onLoginSuccess: any, onC
 
 	// Login button
 	const button = form.createEl("button", { text: "Login" });
-	button.onclick = () => {
+	button.onclick = async () => {
 		const username = usernameInput.value;
 		const password = passwordInput.value;
-
-		// Dummy auth check
-		if (username === "admin" && password === "1234") {
-			onLoginSuccess();
-		} else {
-			message.setText("❌ Invalid credentials");
+		const loginRequest: LoginRequest = {
+			"username": username,
+			"password": password
+		}
+		try {
+			await LoginHandler(loginRequest)
+			onLoginSuccess()
+		} catch (err) {
+			message.textContent = "Login failed. Please check your credentials."
 		}
 	};
 
