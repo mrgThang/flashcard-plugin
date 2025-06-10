@@ -1,7 +1,7 @@
 import { PaginationRequest, PaginationResponse } from "./common"
 
 export interface GetCardsRequest extends PaginationRequest {
-    front: string
+    front?: string
     deckId: number
 }
 

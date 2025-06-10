@@ -1,18 +1,12 @@
-import { Plugin } from "obsidian";
-import { ItemView } from "obsidian";
-import { renderLoginView } from "./src/pages/login"
-import { renderSignupView } from "./src/pages/signup";
-import { renderDeckView } from "src/pages/deck";
-import { renderDeckDetailView } from "src/pages/deck_detail";
-import { renderCreateDeckView } from "src/pages/create_deck";
-import { renderCreateCardView } from "src/pages/create_card";
-import { renderLearnView } from "src/pages/learn";
+import { ItemView, Plugin } from "obsidian";
+import * as React from "react";
+import { createRoot, Root } from "react-dom/client";
+import App from "src/app";
 
 export const FLASHCARD_PANEL = "flashcard-panel";
 
 export class FlashcardPanelView extends ItemView {
-    currentView = "login";
-    lastView = "login";
+    root: Root | null = null;
 
     getViewType(): string {
         return FLASHCARD_PANEL;
@@ -23,25 +17,24 @@ export class FlashcardPanelView extends ItemView {
     }
 
     async onOpen() {
-        this.renderCurrentView();
+        // Create a container for React if it doesn't exist
+        let container = this.containerEl.querySelector(".flashcard-react-root") as HTMLElement;
+        if (!container) {
+            container = document.createElement("div");
+            container.className = "flashcard-react-root";
+            this.containerEl.appendChild(container);
+        }
+        // Mount React app
+        this.root = createRoot(container);
+        this.root.render(React.createElement(App));
     }
 
-    renderCurrentView() {
-        const container = this.containerEl.children[1] as HTMLElement;
-        container.empty();
-        if (this.currentView === "login") renderLoginView(container, () => this.switchView("deck"), () => this.switchView("signup"));
-        else if (this.currentView === "signup") renderSignupView(container, () => this.switchView("login"));
-        else if (this.currentView === "deck") renderDeckView(container, () => this.switchView("deck-detail"), () => this.switchView("create-deck"));
-        else if (this.currentView === "deck-detail") renderDeckDetailView(container, () => this.switchView("deck"), () => this.switchView("create-card"), () => this.switchView("learn"), () => this.switchView("create-deck"));
-        else if (this.currentView === "create-deck") renderCreateDeckView(container, () => this.switchView("deck"), () => this.switchView(this.lastView));
-        else if (this.currentView === "create-card") renderCreateCardView(container, () => this.switchView("deck-detail"));
-        else if (this.currentView == "learn") renderLearnView(container, () => this.switchView("deck-detail"));
-    }
-
-    switchView(view: string) {
-        this.lastView = this.currentView;
-        this.currentView = view;
-        this.renderCurrentView();
+    async onClose() {
+        // Unmount React app
+        if (this.root) {
+            this.root.unmount();
+            this.root = null;
+        }
     }
 }
 

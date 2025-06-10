@@ -1,10 +1,10 @@
 import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "src/constant/constant";
 import { LoginRequest, LoginResponse } from "src/interfaces/login";
-import { GetDecksRequest, GetDecksResponse, CreateDeckRequest, UpdateDeckRequest } from "src/interfaces/deck";
+import { GetDecksRequest, GetDecksResponse, CreateDeckRequest, UpdateDeckRequest, DeckItem } from "src/interfaces/deck";
 import { GetCardsRequest, GetCardsResponse, CreateCardRequest, UpdateCardRequest } from "src/interfaces/card";
 import { ShowError } from "src/helpers/notify";
 
-const BACKEND_URL = 'http://localhost:8000'
+const BACKEND_URL = 'http://localhost:8080'
 
 async function apiRequest(
     url: string,
@@ -36,7 +36,8 @@ async function apiRequest(
         let error
         try {
             const errorData = await response.json()
-            error = new Error(errorData)
+            const message = errorData.message
+            error = new Error(message)
         } catch {
             const errorText = await response.text()
             error = new Error(errorText)
@@ -50,7 +51,7 @@ async function apiRequest(
 }
 
 export async function LoginHandler(request: LoginRequest) {
-    const response: LoginResponse = await apiRequest(`${BACKEND_URL}/v1/login`, "GET", request)
+    const response: LoginResponse = await apiRequest(`${BACKEND_URL}/v1/login`, "POST", request)
     localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY, response.accessToken)
 }
 
@@ -60,12 +61,18 @@ export async function GetDecksHandler(request: GetDecksRequest): Promise<GetDeck
     return response
 }
 
-export async function PostDeckHandler(request: CreateDeckRequest) {
+export async function GetDeckDetailHandler(id: number): Promise<DeckItem> {
+    const headers = getHeaderAuthorization()
+    const response = apiRequest(`${BACKEND_URL}/v1/decks/${id}`, "GET", null, headers)
+    return response
+}
+
+export async function CreateDeckHandler(request: CreateDeckRequest) {
     const headers = getHeaderAuthorization();
     await apiRequest(`${BACKEND_URL}/v1/decks`, "POST", request, headers);
 }
 
-export async function PutDeckHandler(request: UpdateDeckRequest) {
+export async function UpdateDeckHandler(request: UpdateDeckRequest) {
     const headers = getHeaderAuthorization();
     await apiRequest(`${BACKEND_URL}/v1/decks`, "PUT", request, headers);
 }
@@ -76,18 +83,18 @@ export async function GetCardsHandler(request: GetCardsRequest): Promise<GetCard
     return response;
 }
 
-export async function PostCardHandler(request: CreateCardRequest) {
+export async function CreateCardHandler(request: CreateCardRequest) {
     const headers = getHeaderAuthorization();
     await apiRequest(`${BACKEND_URL}/v1/cards`, "POST", request, headers);
 }
 
-export async function PutCardHandler(request: UpdateCardRequest) {
+export async function UpdateCardHandler(request: UpdateCardRequest) {
     const headers = getHeaderAuthorization();
     await apiRequest(`${BACKEND_URL}/v1/cards`, "PUT", request, headers);
 }
 
 function getHeaderAuthorization(): Record<string, string | null> {
     return {
-        'Authorization': localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY)
+        'Authorization': `Bearer ${localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY)}`
     }
 }

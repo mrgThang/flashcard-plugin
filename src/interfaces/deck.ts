@@ -1,15 +1,16 @@
 import { PaginationResponse, PaginationRequest } from "./common"
 
 export interface GetDecksRequest extends PaginationRequest {
-    name: string
+    name?: string
 }
 
 export interface DeckItem {
+    id: number
     name: string
     description: string
     imageUrl: string
-    totalNumberCards: number
-    numberCardsLeft: number
+    totalCards: number
+    cardsLeft: number
 }
 
 export interface GetDecksResponse extends PaginationResponse {
@@ -26,5 +27,5 @@ export interface UpdateDeckRequest {
 export interface CreateDeckRequest {
     name: string
     description: string
-    imageUrl: string
+    imageUrl?: string
 }
