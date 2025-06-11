@@ -30,6 +30,7 @@
 	"dependencies": {
 		"@tiptap/core": "^2.14.0",
 		"@tiptap/starter-kit": "^2.14.0",
+		"dotenv": "^16.5.0",
 		"marked": "^15.0.12"
 	}
 }

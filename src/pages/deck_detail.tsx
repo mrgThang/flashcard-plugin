@@ -33,7 +33,7 @@ export default function DeckDetailView({
         }, []);
 
         useEffect(() => {
-            GetCardsHandler({"deckId": deckId, "page": 1, "pageSize": 10}).then(
+            GetCardsHandler({"deckId": deckId, "page": 1, "pageSize": 1000}).then(
                 (resp: GetCardsResponse) => {
                     setCards(resp.cards)
                 }

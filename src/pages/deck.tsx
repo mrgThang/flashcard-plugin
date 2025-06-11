@@ -19,7 +19,7 @@ export default function DeckView({
   useEffect(() => {
     async function fetchDecks() {
       try {
-        const resp = await GetDecksHandler({ page: 1, pageSize: 10 });
+        const resp = await GetDecksHandler({ page: 1, pageSize: 100 });
         setDecks(resp.decks);
       } catch (error) {
         onExpireToken();

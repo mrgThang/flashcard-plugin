@@ -20,8 +20,8 @@ export default function LoginView({ onLoginSuccess, onClickSignUp }: { onLoginSu
       <h2>Flashcard</h2>
       <div className="login-form">
         <div className="login-row">
-          <label>Username</label>
-          <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Enter username" />
+          <label>Email</label>
+          <input value={username} onChange={e => setUsername(e.target.value)} placeholder="Enter email" />
         </div>
         <div className="login-row">
           <label>Password</label>

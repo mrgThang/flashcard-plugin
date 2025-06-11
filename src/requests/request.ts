@@ -1,10 +1,11 @@
 import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "src/constant/constant";
-import { LoginRequest, LoginResponse } from "src/interfaces/login";
+import { LoginRequest, LoginResponse, SignupRequest } from "src/interfaces/login";
 import { GetDecksRequest, GetDecksResponse, CreateDeckRequest, UpdateDeckRequest, DeckItem } from "src/interfaces/deck";
 import { GetCardsRequest, GetCardsResponse, CreateCardRequest, UpdateCardRequest, StudyCardRequest } from "src/interfaces/card";
 import { ShowError } from "src/helpers/notify";
 
-const BACKEND_URL = 'http://localhost:8080'
+const BACKEND_URL = process.env.BACKEND_URL
+console.log(BACKEND_URL)
 
 async function apiRequest(
     url: string,
@@ -59,6 +60,10 @@ export async function LoginHandler(request: LoginRequest) {
     localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN_KEY, response.accessToken)
 }
 
+export async function SignupHandler(request: SignupRequest) {
+    await apiRequest(`${BACKEND_URL}/v1/signup`, "POST", request)
+}
+
 export async function GetDecksHandler(request: GetDecksRequest): Promise<GetDecksResponse> {
     const headers = getHeaderAuthorization()
     const response = await apiRequest(`${BACKEND_URL}/v1/decks`, "GET", request, headers)
@@ -67,7 +72,7 @@ export async function GetDecksHandler(request: GetDecksRequest): Promise<GetDeck
 
 export async function GetDeckDetailHandler(id: number): Promise<DeckItem> {
     const headers = getHeaderAuthorization()
-    const response = apiRequest(`${BACKEND_URL}/v1/decks/${id}`, "GET", null, headers)
+    const response = await apiRequest(`${BACKEND_URL}/v1/decks/${id}`, "GET", null, headers)
     return response
 }
 

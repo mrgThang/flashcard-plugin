@@ -1,6 +1,8 @@
 import esbuild from "esbuild";
 import process from "process";
 import builtins from "builtin-modules";
+import * as dotenv from "dotenv";
+dotenv.config(); // <-- Load .env
 
 const banner =
 `/*
@@ -39,6 +41,9 @@ const context = await esbuild.context({
 	treeShaking: true,
 	outfile: "main.js",
 	minify: prod,
+	define: {
+        "process.env.BACKEND_URL": JSON.stringify(process.env.BACKEND_URL),
+    },
 });
 
 if (prod) {

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../../styles.css";
+import { SignupHandler } from "src/requests/request";
+import { ShowInfo } from "src/helpers/notify";
 
 interface SignupViewProps {
   onSignupSuccess: () => void;
@@ -12,10 +14,12 @@ export default function SignupView({ onSignupSuccess }: SignupViewProps) {
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Add your signup logic here (API call)
-    // If successful:
-    onSignupSuccess();
-    // If failed, setMessage("Signup failed. Please try again.");
+    SignupHandler({"name": name, "email": email, "password": password}).then(
+      () => {
+        ShowInfo("Signup success!")
+        onSignupSuccess()
+      }
+    )
   };
 
   return (
