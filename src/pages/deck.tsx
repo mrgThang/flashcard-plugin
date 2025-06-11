@@ -1,12 +1,31 @@
 import { useEffect, useState } from "react";
 import { GetDecksHandler } from "../requests/request";
 import { DeckItem } from "../interfaces/deck"
+import { DEFAULT_IMAGE_URL } from "src/constant/constant";
 
-export default function DeckView({ onClickDeckDetail, onClickAddDeck }: { onClickDeckDetail: (deck: any) => void, onClickAddDeck: () => void }) {
+interface DecksProps {
+  onClickDeckDetail: (deckId: number) => void
+  onClickAddDeck: () => void
+  onExpireToken: () => void
+}
+
+export default function DeckView({ 
+  onClickDeckDetail, 
+  onClickAddDeck,
+  onExpireToken,
+}: DecksProps) {
   const [decks, setDecks] = useState<DeckItem[]>([]);
 
   useEffect(() => {
-    GetDecksHandler({ page: 1, pageSize: 10 }).then(resp => setDecks(resp.decks));
+    async function fetchDecks() {
+      try {
+        const resp = await GetDecksHandler({ page: 1, pageSize: 10 });
+        setDecks(resp.decks);
+      } catch (error) {
+        onExpireToken();
+      }
+    }
+    fetchDecks();
   }, []);
 
   return (
@@ -38,7 +57,7 @@ export default function DeckView({ onClickDeckDetail, onClickAddDeck }: { onClic
         {decks.map(deck => (
           <div className="deck-card" key={deck.id} onClick={() => onClickDeckDetail(deck.id)}>
             <div className="deck-card-avatar">
-              <img src={deck.imageUrl ? deck.imageUrl : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/2023_Obsidian_logo.svg/1200px-2023_Obsidian_logo.svg.png"}/>
+              <img src={deck.imageUrl ? deck.imageUrl : DEFAULT_IMAGE_URL}/>
             </div>
             <div className="deck-card-info">
               <div className="deck-card-title">{deck.name}</div>

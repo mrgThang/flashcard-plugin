@@ -618,6 +618,11 @@ If your plugin does not need CSS, delete this file.
 .learn-option-almost:hover { background: #e3f2fd; }
 .learn-option-gotit:hover { background: #e8f5e9; }
 
+.theme-dark .learn-option-forgot:hover { background: #968a8c; }
+.theme-dark .learn-option-struggled:hover { background: #a09f90; }
+.theme-dark .learn-option-almost:hover { background: #9ca6ad; }
+.theme-dark .learn-option-gotit:hover { background: #a9b3aa; }
+
 .theme-dark .learn-option {
     background: #23272e;
     color: #eee;

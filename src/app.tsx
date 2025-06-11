@@ -3,6 +3,10 @@ import LoginView from "./pages/login"
 import DeckView from "./pages/deck"
 import CreateDeckView from "./pages/create_deck"
 import DeckDetailView from "./pages/deck_detail"
+import CreateCardView from "./pages/create_card"
+import LearnView from "./pages/learn"
+import SignupView from "./pages/signup"
+import { CardItem } from "./interfaces/card"
 
 type View =
   | "login"
@@ -14,8 +18,9 @@ type View =
   | "learn";
 
 export default function App() {
-  const [view, setView] = useState<View>("login");
-  const [deckId, setDeckId] = useState<number>();
+  const [view, setView] = useState<View>("deck");
+  const [deckId, setDeckId] = useState<number>(0);
+  const [oldCard, setOldCard] = useState<CardItem>()
 
   return (
     <>
@@ -35,6 +40,7 @@ export default function App() {
             setView("deck-detail");
           }}
           onClickAddDeck={() => setView("create-deck")}
+          onExpireToken={() => setView("login")}
         />
       )}
       {view === "deck-detail" && (
@@ -44,21 +50,33 @@ export default function App() {
           onClickAddCard={() => setView("create-card")}
           onClickLearn={() => setView("learn")}
           onClickEditDeck={() => setView("create-deck")}
+          onClickDetailCard={(card: CardItem) => {
+            setOldCard(card)
+            setView("create-card")
+          }}
         />
       )}
       {view === "create-deck" && (
         <CreateDeckView
+          oldDeckId={deckId}
           onSubmit={() => setView("deck")}
           onCancel={() => setView("deck")}
         />
       )}
       {view === "create-card" && (
         <CreateCardView
-          onBackToDeckDetail={() => setView("deck-detail")}
+          oldCard={oldCard}
+          deckId={deckId}
+          onBackToDeckDetail={
+            () => {
+              setView("deck-detail")
+              setOldCard(undefined)
+            }
+          }
         />
       )}
       {view === "learn" && (
-        <LearnView onGoToDeckDetail={() => setView("deck-detail")} />
+        <LearnView deckId={deckId} onGoToDeckDetail={() => setView("deck-detail")} />
       )}
     </>
   );

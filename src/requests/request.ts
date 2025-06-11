@@ -1,7 +1,7 @@
 import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "src/constant/constant";
 import { LoginRequest, LoginResponse } from "src/interfaces/login";
 import { GetDecksRequest, GetDecksResponse, CreateDeckRequest, UpdateDeckRequest, DeckItem } from "src/interfaces/deck";
-import { GetCardsRequest, GetCardsResponse, CreateCardRequest, UpdateCardRequest } from "src/interfaces/card";
+import { GetCardsRequest, GetCardsResponse, CreateCardRequest, UpdateCardRequest, StudyCardRequest } from "src/interfaces/card";
 import { ShowError } from "src/helpers/notify";
 
 const BACKEND_URL = 'http://localhost:8080'
@@ -22,6 +22,10 @@ async function apiRequest(
 
     if (data && (method === 'POST' || method === 'PUT')) {
         options.body = JSON.stringify(data)
+    }
+    if (data && method === 'GET') {
+        const params = new URLSearchParams(data).toString();
+        url += (url.includes('?') ? '&' : '?') + params;
     }
 
     let response
@@ -57,7 +61,7 @@ export async function LoginHandler(request: LoginRequest) {
 
 export async function GetDecksHandler(request: GetDecksRequest): Promise<GetDecksResponse> {
     const headers = getHeaderAuthorization()
-    const response = apiRequest(`${BACKEND_URL}/v1/decks`, "GET", request, headers)
+    const response = await apiRequest(`${BACKEND_URL}/v1/decks`, "GET", request, headers)
     return response
 }
 
@@ -91,6 +95,11 @@ export async function CreateCardHandler(request: CreateCardRequest) {
 export async function UpdateCardHandler(request: UpdateCardRequest) {
     const headers = getHeaderAuthorization();
     await apiRequest(`${BACKEND_URL}/v1/cards`, "PUT", request, headers);
+}
+
+export async function StudyCardHandler(request: StudyCardRequest) {
+    const headers = getHeaderAuthorization()
+    await apiRequest(`${BACKEND_URL}/v1/cards/study`, "PUT", request, headers)
 }
 
 function getHeaderAuthorization(): Record<string, string | null> {

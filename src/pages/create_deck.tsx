@@ -1,18 +1,34 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../styles.css";
-import { CreateDeckHandler } from "src/requests/request";
+import { CreateDeckHandler, GetDeckDetailHandler, UpdateDeckHandler } from "src/requests/request";
+import { DeckItem } from "src/interfaces/deck";
+import { DEFAULT_IMAGE_URL } from "src/constant/constant";
 
 interface CreateDeckProps {
+  oldDeckId?: number;
   onSubmit: () => void;
   onCancel: () => void;
 }
 
-export default function CreateDeckView({ onSubmit, onCancel }: CreateDeckProps) {
+export default function CreateDeckView({ oldDeckId, onSubmit, onCancel }: CreateDeckProps) {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [preview, setPreview] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (oldDeckId && oldDeckId > 0) {
+      GetDeckDetailHandler(oldDeckId).then(
+        (deck: DeckItem) => {
+          setName(deck.name);
+          setDescription(deck.description);
+          setImage(deck.imageUrl ? deck.imageUrl : DEFAULT_IMAGE_URL);
+          setPreview(deck.imageUrl ? deck.imageUrl : DEFAULT_IMAGE_URL);
+        }
+      )
+    }
+  }, [oldDeckId]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -28,6 +44,17 @@ export default function CreateDeckView({ onSubmit, onCancel }: CreateDeckProps) 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (oldDeckId && oldDeckId > 0) {
+      UpdateDeckHandler({
+          "id": oldDeckId,
+          "name": name,
+          "description": description,
+          "imageUrl": image
+      }).then(() => {
+          onSubmit()
+      })
+      return
+    }
     CreateDeckHandler({
         "name": name,
         "description": description,
@@ -93,7 +120,7 @@ export default function CreateDeckView({ onSubmit, onCancel }: CreateDeckProps) 
 
         {/* Actions */}
         <div className="create-deck-row">
-          <button type="submit" className="mod-cta">Create</button>
+          <button type="submit" className="mod-cta">{(oldDeckId && oldDeckId > 0) ? "Update" : "Create"}</button>
           <button type="button" onClick={onCancel}>Cancel</button>
         </div>
       </form>
